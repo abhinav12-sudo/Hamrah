@@ -1,0 +1,577 @@
+/* ---------------------------------------------------------
+   Design tokens
+   A quiet, paper-and-stone palette with one deep pine-green
+   accent — meant to feel like a noticeboard, not an app store.
+--------------------------------------------------------- */
+:root {
+  --bg: #edeee9;
+  --surface: #f9faf7;
+  --surface-raised: #ffffff;
+  --border: #d7d5c9;
+  --text: #23261f;
+  --text-muted: #63665b;
+  --text-faint: #96988a;
+  --accent: #2f7d5e;
+  --accent-hover: #256349;
+  --accent-soft: #dcf0e4;
+  --warn: #c1552f;
+  --warn-soft: #f8ded1;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------
+   Layout shell
+--------------------------------------------------------- */
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.brand-sub {
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-user .who {
+  text-align: right;
+}
+
+.topbar-user .who .name {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.topbar-user .who .hostel {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+
+.tabs {
+  display: flex;
+  gap: 26px;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.tab {
+  border: none;
+  background: none;
+  padding: 14px 2px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.tab.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.main-area {
+  flex: 1;
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* ---------------------------------------------------------
+   Buttons
+--------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 13.5px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  background: var(--text-faint);
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-warn {
+  background: transparent;
+  color: var(--warn);
+  border-color: var(--warn-soft);
+}
+
+.btn-warn:hover {
+  background: var(--warn-soft);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-sm {
+  padding: 7px 12px;
+  font-size: 12.5px;
+}
+
+/* ---------------------------------------------------------
+   Forms
+--------------------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  min-width: 0; /* lets this shrink inside a grid/flex row instead of overflowing */
+}
+
+.field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.form-error {
+  background: var(--warn-soft);
+  color: var(--warn);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: -10px;
+  margin-bottom: 16px;
+}
+
+/* ---------------------------------------------------------
+   Cards
+--------------------------------------------------------- */
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  font-size: 20px;
+}
+
+.section-heading .count {
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.search-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.search-bar .swap {
+  align-self: center;
+  border: none;
+  background: none;
+  color: var(--text-faint);
+  font-size: 16px;
+  padding: 8px;
+  margin-bottom: 2px;
+}
+
+.ride-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ride-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.ride-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.ride-route .arrow {
+  color: var(--text-faint);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.ride-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.ride-meta .dot::before {
+  content: "\00b7";
+  margin-right: 14px;
+  color: var(--text-faint);
+}
+
+.ride-notes {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.ride-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.ride-creator {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.ride-creator strong {
+  color: var(--text);
+}
+
+.seats-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.seats-pill.full {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.booking-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 13.5px;
+}
+
+.booking-row:first-of-type {
+  border-top: none;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--text-faint);
+}
+
+.empty-state h3 {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  font-size: 13.5px;
+}
+
+/* ---------------------------------------------------------
+   Modal
+--------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(38, 37, 33, 0.4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.modal {
+  background: var(--surface-raised);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 460px;
+  padding: 26px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.modal-close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  color: var(--text-faint);
+  line-height: 1;
+  padding: 4px;
+}
+
+/* ---------------------------------------------------------
+   Auth screen
+--------------------------------------------------------- */
+.auth-screen {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 34px 30px;
+}
+
+.auth-card .brand-mark {
+  font-size: 26px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.auth-card .tagline {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  margin-bottom: 26px;
+}
+
+.auth-toggle {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.auth-toggle button {
+  border: none;
+  background: none;
+  padding: 0 0 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-faint);
+  border-bottom: 2px solid transparent;
+}
+
+.auth-toggle button.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+/* ---------------------------------------------------------
+   Profile
+--------------------------------------------------------- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.profile-header .avatar-circle {
+  width: 48px;
+  height: 48px;
+  font-size: 17px;
+}
+
+@media (max-width: 560px) {
+  .search-bar {
+    grid-template-columns: 1fr;
+  }
+  .search-bar .swap {
+    display: none;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    padding: 14px 16px;
+  }
+  .main-area {
+    padding: 20px 14px 50px;
+  }
+}

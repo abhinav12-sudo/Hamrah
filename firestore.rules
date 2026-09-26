@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Each student's own profile: they can create/edit only their own doc,
+    // but any signed-in user can read names/mobiles (needed to show ride
+    // creators and riders to each other).
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    // Rides: any signed-in user can read and create rides.
+    // Only the ride's creator may delete it.
+    // Update is left open to any signed-in user because booking a seat
+    // means writing into someone else's ride document (its `bookings`
+    // array) — Firestore rules can't easily tell "added my own booking"
+    // apart from "edited someone else's fields" without a Cloud Function.
+    // This is fine for a trusted, single-campus audience; tighten it with
+    // a Cloud Function if you need per-field write control.
+    match /rides/{rideId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+                    && request.resource.data.creatorId == request.auth.uid;
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null
+                    && resource.data.creatorId == request.auth.uid;
+    }
+  }
+}
