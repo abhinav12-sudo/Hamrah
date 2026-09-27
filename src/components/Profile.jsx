@@ -64,8 +64,8 @@ export default function Profile({ profile, uid }) {
         {saved && (
           <div
             style={{
-              background: "var(--accent-soft)",
-              color: "var(--accent)",
+              background: "var(--teal-soft)",
+              color: "var(--teal)",
               padding: "10px 12px",
               borderRadius: 8,
               fontSize: 13,

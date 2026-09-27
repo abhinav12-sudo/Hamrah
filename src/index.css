@@ -4,18 +4,20 @@
    accent — meant to feel like a noticeboard, not an app store.
 --------------------------------------------------------- */
 :root {
-  --bg: #edeee9;
-  --surface: #f9faf7;
+  --bg: #faf6ef;
+  --surface: #fffdf9;
   --surface-raised: #ffffff;
-  --border: #d7d5c9;
-  --text: #23261f;
-  --text-muted: #63665b;
-  --text-faint: #96988a;
-  --accent: #2f7d5e;
-  --accent-hover: #256349;
-  --accent-soft: #dcf0e4;
-  --warn: #c1552f;
-  --warn-soft: #f8ded1;
+  --border: #e6dbc7;
+  --text: #2b241d;
+  --text-muted: #7d7161;
+  --text-faint: #b3a68f;
+  --accent: #d97b34;
+  --accent-hover: #b8621f;
+  --accent-soft: #fce8d2;
+  --teal: #1f7a72;
+  --teal-soft: #d9efec;
+  --warn: #c23b30;
+  --warn-soft: #f8dad5;
 
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -94,18 +96,34 @@ a {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
 }
 
-.brand-mark {
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand-name {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 19px;
+  line-height: 1.1;
   color: var(--accent);
 }
 
 .brand-sub {
-  font-size: 12.5px;
+  font-size: 12px;
+  line-height: 1.1;
   color: var(--text-faint);
 }
 
@@ -410,8 +428,8 @@ a {
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 20px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--teal-soft);
+  color: var(--teal);
 }
 
 .seats-pill.full {
@@ -508,10 +526,23 @@ a {
   padding: 34px 30px;
 }
 
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--accent);
+}
+
 .auth-card .brand-mark {
-  font-size: 26px;
+  font-size: 24px;
   margin-bottom: 4px;
-  display: block;
+}
+
+.auth-card .brand-logo {
+  width: 40px;
+  height: 40px;
 }
 
 .auth-card .tagline {

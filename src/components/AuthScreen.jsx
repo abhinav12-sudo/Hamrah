@@ -64,7 +64,10 @@ export default function AuthScreen() {
   return (
     <div className="auth-screen">
       <div className="auth-card">
-        <span className="brand-mark">🚗 Hamrah</span>
+        <span className="brand-mark">
+          <img src="/logo-128.png" alt="" className="brand-logo" />
+          Hamrah
+        </span>
         <p className="tagline">Shared rides to and from campus, coordinated in one place.</p>
 
         <div className="auth-toggle">

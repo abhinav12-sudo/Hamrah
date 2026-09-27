@@ -15,8 +15,11 @@ export default function Navbar({ profile, activeTab, onTabChange }) {
     <>
       <div className="topbar">
         <div className="brand">
-          <span className="brand-mark">🚗 Hamrah</span>
-          <span className="brand-sub">NIT Srinagar rideshare</span>
+          <img src="/logo-128.png" alt="" className="brand-logo" />
+          <div className="brand-text">
+            <span className="brand-name">Hamrah</span>
+            <span className="brand-sub">NIT Srinagar rideshare</span>
+          </div>
         </div>
         <div className="topbar-user">
           <div className="who">
