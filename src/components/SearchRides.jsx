@@ -2,10 +2,7 @@ import { useMemo, useState } from "react";
 import RideCard from "./RideCard";
 import CreateRideModal from "./CreateRideModal";
 import { bookRide } from "../rideActions";
-
-function todayStr() {
-  return new Date().toISOString().slice(0, 10);
-}
+import { isFutureDateTime } from "../dateUtils";
 
 export default function SearchRides({ rides, profile, uid }) {
   const [from, setFrom] = useState("");
@@ -14,9 +11,9 @@ export default function SearchRides({ rides, profile, uid }) {
   const [error, setError] = useState("");
 
   const results = useMemo(() => {
-    const today = todayStr();
     return rides
-      .filter((r) => r.date >= today)
+      // hide rides whose departure time has already passed
+      .filter((r) => isFutureDateTime(r.date, r.time))
       .filter((r) => (from ? r.from.toLowerCase().includes(from.toLowerCase()) : true))
       .filter((r) => (to ? r.to.toLowerCase().includes(to.toLowerCase()) : true))
       .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));

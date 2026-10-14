@@ -50,7 +50,7 @@ export default function App() {
         {tab === "search" && <SearchRides rides={rides} profile={profile} uid={user.uid} />}
         {tab === "bookings" && <MyBookings rides={rides} uid={user.uid} />}
         {tab === "mine" && <MyRides rides={rides} uid={user.uid} />}
-        {tab === "profile" && <Profile profile={profile} uid={user.uid} />}
+        {tab === "profile" && <Profile profile={profile} uid={user.uid} rides={rides} />}
       </div>
     </div>
   );

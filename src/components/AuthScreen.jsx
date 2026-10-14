@@ -8,11 +8,13 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 const MOBILE_RE = /^[6-9]\d{9}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function AuthScreen() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
 
   const [form, setForm] = useState({
     name: "",
@@ -24,16 +26,30 @@ export default function AuthScreen() {
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+    setErrors((errs) => (errs[field] ? { ...errs, [field]: undefined } : errs));
+  }
+
+  function validate() {
+    const errs = {};
+    if (mode === "signup") {
+      if (!form.name.trim()) errs.name = "Enter your full name.";
+      if (!MOBILE_RE.test(form.mobile.trim())) errs.mobile = "Enter a valid 10-digit mobile number.";
+    }
+    if (!form.email.trim()) errs.email = "Enter your email.";
+    else if (!EMAIL_RE.test(form.email.trim())) errs.email = "That email doesn't look right.";
+    if (!form.password) errs.password = "Enter your password.";
+    else if (mode === "signup" && form.password.length < 6)
+      errs.password = "Use at least 6 characters.";
+    return errs;
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
-    if (mode === "signup" && !MOBILE_RE.test(form.mobile.trim())) {
-      setError("Enter a valid 10-digit mobile number.");
-      return;
-    }
+    const errs = validate();
+    setErrors(errs);
+    if (Object.values(errs).some(Boolean)) return;
 
     setLoading(true);
     try {
@@ -73,14 +89,14 @@ export default function AuthScreen() {
         <div className="auth-toggle">
           <button
             className={mode === "login" ? "active" : ""}
-            onClick={() => setMode("login")}
+            onClick={() => { setMode("login"); setErrors({}); setError(""); }}
             type="button"
           >
             Log in
           </button>
           <button
             className={mode === "signup" ? "active" : ""}
-            onClick={() => setMode("signup")}
+            onClick={() => { setMode("signup"); setErrors({}); setError(""); }}
             type="button"
           >
             Sign up
@@ -89,30 +105,30 @@ export default function AuthScreen() {
 
         {error && <div className="form-error">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           {mode === "signup" && (
             <>
-              <div className="field">
+              <div className={`field ${errors.name ? "has-error" : ""}`}>
                 <label htmlFor="name">Full name</label>
                 <input
                   id="name"
-                  required
                   value={form.name}
                   onChange={(e) => update("name", e.target.value)}
                   placeholder="Aatif Bashir"
                 />
+              {errors.name && <p className="field-error">{errors.name}</p>}
               </div>
               <div className="field-row">
-                <div className="field">
+                <div className={`field ${errors.mobile ? "has-error" : ""}`}>
                   <label htmlFor="mobile">Mobile number</label>
                   <input
                     id="mobile"
-                    required
                     inputMode="numeric"
                     value={form.mobile}
                     onChange={(e) => update("mobile", e.target.value)}
                     placeholder="9876543210"
                   />
+                {errors.mobile && <p className="field-error">{errors.mobile}</p>}
                 </div>
                 <div className="field">
                   <label htmlFor="hostel">Hostel / branch</label>
@@ -127,29 +143,28 @@ export default function AuthScreen() {
             </>
           )}
 
-          <div className="field">
+          <div className={`field ${errors.email ? "has-error" : ""}`}>
             <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
-              required
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
               placeholder="you@example.com"
             />
+          {errors.email && <p className="field-error">{errors.email}</p>}
           </div>
 
-          <div className="field">
+          <div className={`field ${errors.password ? "has-error" : ""}`}>
             <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
-              required
-              minLength={6}
               value={form.password}
               onChange={(e) => update("password", e.target.value)}
               placeholder="At least 6 characters"
             />
+          {errors.password && <p className="field-error">{errors.password}</p>}
           </div>
 
           <button className="btn btn-primary btn-block" disabled={loading} type="submit">

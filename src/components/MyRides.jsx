@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
 import RideCard from "./RideCard";
+import ConfirmDialog from "./ConfirmDialog";
 import { deleteRide } from "../rideActions";
 
 export default function MyRides({ rides, uid }) {
   const [error, setError] = useState("");
+  const [pendingDelete, setPendingDelete] = useState(null); // ride awaiting confirmation
+  const [deleting, setDeleting] = useState(false);
 
   const myRides = useMemo(
     () =>
@@ -13,15 +16,26 @@ export default function MyRides({ rides, uid }) {
     [rides, uid]
   );
 
-  async function handleDelete(ride) {
-    if (!window.confirm("Delete this ride? This can't be undone.")) return;
+  function handleDelete(ride) {
     setError("");
+    setPendingDelete(ride);
+  }
+
+  async function confirmDelete() {
+    if (!pendingDelete) return;
+    setDeleting(true);
     try {
-      await deleteRide(ride.id);
+      await deleteRide(pendingDelete.id);
+      setPendingDelete(null);
     } catch {
+      setPendingDelete(null);
       setError("Couldn't delete that ride. Please try again.");
+    } finally {
+      setDeleting(false);
     }
   }
+
+  const bookedCount = (pendingDelete?.bookings || []).length;
 
   return (
     <div>
@@ -43,6 +57,27 @@ export default function MyRides({ rides, uid }) {
             <RideCard key={ride.id} ride={ride} variant="mine" currentUid={uid} onDelete={handleDelete} />
           ))}
         </div>
+      )}
+
+      {pendingDelete && (
+        <ConfirmDialog
+          title="Delete this ride?"
+          confirmLabel="Delete ride"
+          cancelLabel="Keep it"
+          danger
+          busy={deleting}
+          onConfirm={confirmDelete}
+          onCancel={() => setPendingDelete(null)}
+        >
+          <p className="confirm-route">
+            {pendingDelete.from} &rarr; {pendingDelete.to}
+          </p>
+          <p>
+            {bookedCount > 0
+              ? `${bookedCount} ${bookedCount === 1 ? "student has" : "students have"} already booked this ride. Deleting it removes their booking too, so let them know.`
+              : "This can't be undone."}
+          </p>
+        </ConfirmDialog>
       )}
     </div>
   );
